@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG Quest Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Character Creation Screen -->
+        <div id="character-creation" class="screen active">
+            <h1 class="game-title">⚔️ RPG Quest Tracker ⚔️</h1>
+            <div class="card creation-card">
+                <h2>Create Your Hero</h2>
+                
+                <div class="form-group">
+                    <label for="hero-name">Hero Name</label>
+                    <input type="text" id="hero-name" placeholder="Enter your hero's name" maxlength="20">
+                </div>
+
+                <div class="form-group">
+                    <label for="hero-class">Choose Your Class</label>
+                    <select id="hero-class">
+                        <option value="warrior">🗡️ Warrior - High STR & HP</option>
+                        <option value="mage">🔮 Mage - High INT & MP</option>
+                        <option value="rogue">🗡️ Rogue - Balanced Stats</option>
+                        <option value="paladin">🛡️ Paladin - High HP & STR</option>
+                        <option value="archer">🏹 Archer - High DEX & INT</option>
+                    </select>
+                </div>
+
+                <div class="stats-setup">
+                    <h3>Allocate Stat Points (10 points remaining)</h3>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <label>💪 STR (Strength)</label>
+                            <div class="stat-control">
+                                <button class="stat-btn minus" data-stat="str">-</button>
+                                <span id="str-value" class="stat-value">5</span>
+                                <button class="stat-btn plus" data-stat="str">+</button>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <label>🧠 INT (Intelligence)</label>
+                            <div class="stat-control">
+                                <button class="stat-btn minus" data-stat="int">-</button>
+                                <span id="int-value" class="stat-value">5</span>
+                                <button class="stat-btn plus" data-stat="int">+</button>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <label>❤️ HP (Health Points)</label>
+                            <div class="stat-control">
+                                <button class="stat-btn minus" data-stat="hp">-</button>
+                                <span id="hp-value" class="stat-value">100</span>
+                                <button class="stat-btn plus" data-stat="hp">+</button>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <label>✨ MP (Magic Points)</label>
+                            <div class="stat-control">
+                                <button class="stat-btn minus" data-stat="mp">-</button>
+                                <span id="mp-value" class="stat-value">50</span>
+                                <button class="stat-btn plus" data-stat="mp">+</button>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <label>🎯 DEX (Dexterity)</label>
+                            <div class="stat-control">
+                                <button class="stat-btn minus" data-stat="dex">-</button>
+                                <span id="dex-value" class="stat-value">5</span>
+                                <button class="stat-btn plus" data-stat="dex">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="points-remaining">Points Remaining: <span id="points-remaining">10</span></p>
+                </div>
+
+                <button id="start-adventure" class="btn-primary">Start Adventure!</button>
+            </div>
+        </div>
+
+        <!-- Main Game Screen -->
+        <div id="game-screen" class="screen">
+            <!-- Header with Character Info -->
+            <header class="game-header">
+                <div class="character-info">
+                    <div class="avatar" id="class-avatar">🗡️</div>
+                    <div class="char-details">
+                        <h2 id="display-name">Hero</h2>
+                        <p id="display-class" class="class-badge">Warrior</p>
+                    </div>
+                </div>
+                <div class="level-info">
+                    <span class="level-badge">Level <span id="level-display">1</span></span>
+                    <div class="xp-bar">
+                        <div id="xp-progress" class="xp-progress"></div>
+                    </div>
+                    <span id="xp-text" class="xp-text">0/100 XP</span>
+                </div>
+            </header>
+
+            <!-- Stats Panel -->
+            <section class="stats-panel">
+                <div class="stat-box">
+                    <span class="stat-icon">💪</span>
+                    <span class="stat-label">STR</span>
+                    <span id="stat-str" class="stat-num">5</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-icon">🧠</span>
+                    <span class="stat-label">INT</span>
+                    <span id="stat-int" class="stat-num">5</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-icon">🎯</span>
+                    <span class="stat-label">DEX</span>
+                    <span id="stat-dex" class="stat-num">5</span>
+                </div>
+                <div class="stat-box hp-box">
+                    <span class="stat-icon">❤️</span>
+                    <span class="stat-label">HP</span>
+                    <div class="bar-container">
+                        <div id="hp-bar" class="health-bar"></div>
+                    </div>
+                    <span id="stat-hp" class="stat-num">100/100</span>
+                </div>
+                <div class="stat-box mp-box">
+                    <span class="stat-icon">✨</span>
+                    <span class="stat-label">MP</span>
+                    <div class="bar-container">
+                        <div id="mp-bar" class="mana-bar"></div>
+                    </div>
+                    <span id="stat-mp" class="stat-num">50/50</span>
+                </div>
+            </section>
+
+            <!-- Quest Section -->
+            <main class="quest-section">
+                <!-- Main Quest -->
+                <section class="quest-card main-quest">
+                    <div class="quest-header">
+                        <h3>📜 Main Quest</h3>
+                        <button class="add-btn" id="add-main-quest">+</button>
+                    </div>
+                    <div id="main-quest-list" class="quest-list">
+                        <p class="empty-message">No main quest set. Click + to add one!</p>
+                    </div>
+                </section>
+
+                <!-- Sub Quests -->
+                <section class="quest-card sub-quests">
+                    <div class="quest-header">
+                        <h3>📋 Sub Quests (0/3)</h3>
+                        <button class="add-btn" id="add-sub-quest">+</button>
+                    </div>
+                    <div id="sub-quest-list" class="quest-list">
+                        <p class="empty-message">No sub quests. Click + to add up to 3!</p>
+                    </div>
+                </section>
+
+                <!-- Grinding/Habits -->
+                <section class="quest-card grinding">
+                    <div class="quest-header">
+                        <h3>⚔️ Daily Grinding (Habits)</h3>
+                        <button class="add-btn" id="add-grinding">+</button>
+                    </div>
+                    <div id="grinding-list" class="quest-list">
+                        <p class="empty-message">No habits set. Click + to add grinding tasks!</p>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Action Buttons -->
+            <footer class="game-footer">
+                <button id="reset-daily" class="btn-secondary">🌅 New Day</button>
+                <button id="edit-character" class="btn-secondary">✏️ Edit Hero</button>
+            </footer>
+        </div>
+
+        <!-- Modal for Adding Quests -->
+        <div id="quest-modal" class="modal">
+            <div class="modal-content">
+                <h3 id="modal-title">Add Quest</h3>
+                <div class="form-group">
+                    <label for="quest-name">Quest Name</label>
+                    <input type="text" id="quest-name" placeholder="Enter quest name" maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label for="quest-xp">XP Reward</label>
+                    <input type="number" id="quest-xp" placeholder="XP reward" min="1" max="100" value="10">
+                </div>
+                <div class="form-group">
+                    <label for="quest-stat">Stat Bonus (Optional)</label>
+                    <select id="quest-stat">
+                        <option value="">None</option>
+                        <option value="str">💪 STR</option>
+                        <option value="int">🧠 INT</option>
+                        <option value="dex">🎯 DEX</option>
+                        <option value="hp">❤️ HP</option>
+                        <option value="mp">✨ MP</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button id="cancel-quest" class="btn-secondary">Cancel</button>
+                    <button id="save-quest" class="btn-primary">Save Quest</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
